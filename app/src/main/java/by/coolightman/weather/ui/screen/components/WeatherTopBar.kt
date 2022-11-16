@@ -26,7 +26,7 @@ import by.coolightman.weather.R
 @Composable
 fun WeatherTopBar(
     mainText: String,
-    secondText: String,
+    secondText: String = "",
     background: Color = MaterialTheme.colors.background,
     onClickMenu: () -> Unit,
     onClickReload: () -> Unit
@@ -55,7 +55,10 @@ fun WeatherTopBar(
                         fontWeight = FontWeight.Bold
                     )
                 ) {
-                    append("$mainText\n")
+                    val topBarMainText =
+                        if (secondText.isNotEmpty()) "$mainText\n"
+                        else mainText
+                    append(topBarMainText)
                 }
                 withStyle(
                     style = SpanStyle(
