@@ -1,11 +1,10 @@
 package by.coolightman.weather.ui.screen.components
 
-import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,7 +21,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun NowWeatherBlock(
     temp: String,
-    @DrawableRes iconRes: Int,
+    icon: Painter,
     description: String,
     feelTemp: String
 ) {
@@ -48,8 +47,8 @@ fun NowWeatherBlock(
                 )
             )
 
-            Icon(
-                painter = painterResource(iconRes),
+            Image(
+                painter = icon,
                 contentDescription = "weather icon",
                 modifier = Modifier.size(42.dp)
             )

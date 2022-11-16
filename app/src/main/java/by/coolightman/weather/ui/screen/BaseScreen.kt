@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -37,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import by.coolightman.weather.R
+import by.coolightman.weather.ui.screen.components.NowParamsBlock
 import by.coolightman.weather.ui.screen.components.NowWeatherBlock
 import by.coolightman.weather.ui.screen.components.SpacerHorizon
 import by.coolightman.weather.ui.screen.components.WeatherTopBar
@@ -89,18 +89,25 @@ fun BaseScreen() {
                 ) {
                     NowWeatherBlock(
                         temp = "+3",
-                        iconRes = R.drawable.cloudy,
+                        icon = painterResource(R.drawable.cloudy),
                         description = "Overcast",
                         feelTemp = "-3"
                     )
                     LazyRow(
                         state = lazyRowState,
                         verticalAlignment = Alignment.CenterVertically,
-                        contentPadding = PaddingValues(12.dp),
+                        contentPadding = PaddingValues(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(6.dp),
-                        modifier = Modifier.fillMaxHeight()
+                        modifier = Modifier.fillMaxSize()
                     ) {
-
+                        item {
+                            NowParamsBlock(
+                                wind = "4",
+                                windDirection = "NW",
+                                pressure = "748",
+                                humidity = "89"
+                            )
+                        }
                     }
                 }
                 Column(
