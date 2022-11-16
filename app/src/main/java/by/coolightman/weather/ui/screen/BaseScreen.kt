@@ -114,7 +114,7 @@ fun BaseScreen() {
 
                     SpacerHorizon(height = 12.dp)
 
-                    daysWeatherList.forEach {
+                    daysWeatherList.forEach { _ ->
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
