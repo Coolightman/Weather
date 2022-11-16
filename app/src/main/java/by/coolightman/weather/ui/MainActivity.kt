@@ -1,4 +1,4 @@
-package by.coolightman.weather
+package by.coolightman.weather.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
