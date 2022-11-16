@@ -121,7 +121,7 @@ fun BaseScreen() {
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(48.dp)
+                                .height(56.dp)
                         ) {
 
                         }
