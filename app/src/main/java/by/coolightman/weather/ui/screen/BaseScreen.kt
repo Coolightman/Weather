@@ -2,7 +2,6 @@ package by.coolightman.weather.ui.screen
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
@@ -27,20 +25,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import by.coolightman.weather.R
+import by.coolightman.weather.ui.screen.components.ImagedBlock
 import by.coolightman.weather.ui.screen.components.NowParamsBlock
 import by.coolightman.weather.ui.screen.components.NowWeatherBlock
 import by.coolightman.weather.ui.screen.components.SpacerHorizon
 import by.coolightman.weather.ui.screen.components.WeatherTopBar
-import by.coolightman.weather.ui.theme.TintFilter
 import by.coolightman.weather.ui.theme.WeatherTheme
 import kotlinx.coroutines.launch
 
@@ -75,24 +70,14 @@ fun BaseScreen() {
                     .fillMaxSize()
                     .verticalScroll(scrollState)
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(350.dp)
-                        .clip(RoundedCornerShape(0.dp, 0.dp, 32.dp, 32.dp))
-                        .paint(
-                            painter = painterResource(R.drawable.good_weather_day),
-                            contentScale = ContentScale.FillWidth
-                        )
-                        .background(TintFilter)
-                ) {
+                ImagedBlock(image = painterResource(R.drawable.good_weather_day)) {
                     NowWeatherBlock(
                         temp = "+3",
                         icon = painterResource(R.drawable.cloudy),
                         description = "Overcast",
                         feelTemp = "-3"
                     )
+
                     LazyRow(
                         state = lazyRowState,
                         verticalAlignment = Alignment.CenterVertically,
@@ -110,6 +95,7 @@ fun BaseScreen() {
                         }
                     }
                 }
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
