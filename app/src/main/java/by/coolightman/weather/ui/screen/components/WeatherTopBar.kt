@@ -1,7 +1,10 @@
 package by.coolightman.weather.ui.screen.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,14 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import by.coolightman.weather.R
+import by.coolightman.weather.ui.theme.ColorAccent
 
 @Composable
 fun WeatherTopBar(
@@ -44,35 +44,31 @@ fun WeatherTopBar(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_round_menu_24),
-                contentDescription = "menu"
+                contentDescription = "menu",
+                tint = ColorAccent
             )
         }
 
-        Text(
-            text = buildAnnotatedString {
-                withStyle(
-                    style = SpanStyle(
-                        fontWeight = FontWeight.Bold
-                    )
-                ) {
-                    val topBarMainText =
-                        if (secondText.isNotEmpty()) "$mainText\n"
-                        else mainText
-                    append(topBarMainText)
-                }
-                withStyle(
-                    style = SpanStyle(
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colors.onSurface.copy(0.5f)
-                    )
-                ) {
-                    append(secondText)
-                }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f)
+        ) {
+            Text(
+                text = mainText,
+                fontWeight = FontWeight.Bold
+            )
+            if (secondText.isNotEmpty()) {
+                Text(
+                    text = secondText,
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colors.onSurface.copy(0.5f)
+                )
 
-            },
-            textAlign = TextAlign.Center,
-            modifier = Modifier.weight(1f)
-        )
+            }
+        }
 
         IconButton(
             onClick = { onClickReload() },
@@ -80,7 +76,8 @@ fun WeatherTopBar(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_round_cached_24),
-                contentDescription = "reload"
+                contentDescription = "reload",
+                tint = ColorAccent
             )
         }
     }
