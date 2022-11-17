@@ -1,13 +1,15 @@
 package by.coolightman.weather.di
 
 import by.coolightman.weather.data.remote.service.ApiService
+import by.coolightman.weather.ui.screen.BaseViewModel
 import by.coolightman.weather.util.API_URL_ROOT
+import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val viewModelModule = module {
-//    viewModelOf(::MembersViewModel)
+    viewModelOf(::BaseViewModel)
 }
 
 val repositoryModule = module {
@@ -20,7 +22,7 @@ val databaseModule = module {
 }
 
 val apiModule = module {
-    single{
+    single {
         val retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(API_URL_ROOT)

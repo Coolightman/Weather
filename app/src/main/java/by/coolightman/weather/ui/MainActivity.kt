@@ -9,8 +9,10 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import by.coolightman.weather.ui.screen.BaseScreen
+import by.coolightman.weather.ui.screen.BaseViewModel
 import by.coolightman.weather.ui.theme.WeatherTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -34,6 +36,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    val viewModel: BaseViewModel = koinViewModel()
                     BaseScreen()
                 }
             }
