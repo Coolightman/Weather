@@ -1,4 +1,4 @@
-package by.coolightman.weather.data.local
+package by.coolightman.weather.domain.model
 
 sealed class ApiState {
     object Loading : ApiState()

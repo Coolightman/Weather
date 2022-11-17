@@ -23,7 +23,7 @@ class BaseViewModel(
     private fun fetchWeatherStamp() {
         viewModelScope.launch {
             try {
-                val response = apiService.getWeather("Minsk")
+                val response = apiService.getWeatherStamp("Minsk")
                 Log.d("WEATHER_TAG", "response: $response")
                 if (response.isSuccessful){
                     response.body()?.let {

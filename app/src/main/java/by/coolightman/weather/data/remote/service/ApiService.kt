@@ -14,7 +14,7 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET("{$API_PLACE_PATH}")
-    suspend fun getWeather(
+    suspend fun getWeatherStamp(
         @Path(API_PLACE_PATH) place: String,
         @Query(API_KEY_PARAM) key: String = BuildConfig.API_KEY,
         @Query(API_UNIT_PARAM) unit: String = API_UNIT_METRIC
