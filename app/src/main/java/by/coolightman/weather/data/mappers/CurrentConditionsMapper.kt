@@ -2,6 +2,7 @@ package by.coolightman.weather.data.mappers
 
 import by.coolightman.weather.data.local.modelDb.CurrentConditionsDb
 import by.coolightman.weather.data.remote.dto.CurrentConditionsDto
+import by.coolightman.weather.domain.model.CurrentConditions
 import by.coolightman.weather.util.orEmpty
 
 fun CurrentConditionsDto.toDbModel(stampId: Long): CurrentConditionsDb = CurrentConditionsDb(
@@ -19,4 +20,22 @@ fun CurrentConditionsDto.toDbModel(stampId: Long): CurrentConditionsDb = Current
     sunriseEpoch = sunriseEpoch.orEmpty(),
     sunsetEpoch = sunsetEpoch.orEmpty(),
     moonPhase = moonPhase.orEmpty()
+)
+
+fun CurrentConditionsDb.toModel(): CurrentConditions = CurrentConditions(
+    id,
+    stampId,
+    datetimeEpoch,
+    temp,
+    feelsLike,
+    humidity,
+    dew,
+    windSpeed,
+    windDir,
+    pressure,
+    conditions,
+    icon,
+    sunriseEpoch,
+    sunsetEpoch,
+    moonPhase
 )

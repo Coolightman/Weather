@@ -1,9 +1,16 @@
 package by.coolightman.weather.di
 
+import androidx.room.Room
+import by.coolightman.weather.data.local.AppDatabase
 import by.coolightman.weather.data.remote.service.ApiService
+import by.coolightman.weather.data.repository.WeatherRepositoryImpl
+import by.coolightman.weather.domain.repository.WeatherRepository
 import by.coolightman.weather.ui.screen.BaseViewModel
 import by.coolightman.weather.util.API_URL_ROOT
+import by.coolightman.weather.util.DB_NAME
 import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -13,23 +20,30 @@ val viewModelModule = module {
 }
 
 val repositoryModule = module {
-
-//    singleOf(::MemberRepositoryImpl) { bind<MemberRepository>() }
+    singleOf(::WeatherRepositoryImpl) { bind<WeatherRepository>() }
 }
 
 val databaseModule = module {
-//    single { MembersDatabase(get()) }
+    single {
+        Room.databaseBuilder(
+            get(),
+            AppDatabase::class.java,
+            DB_NAME
+        ).build()
+    }
+
+    single { get<AppDatabase>().weatherDao() }
 }
 
 val apiModule = module {
     single {
-        val retrofit = Retrofit.Builder()
+        Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(API_URL_ROOT)
             .build()
-
-        retrofit.create(ApiService::class.java)
     }
+
+    single { get<Retrofit>().create(ApiService::class.java) }
 }
 
 val appModule = module {
