@@ -2,7 +2,7 @@
 .gradle/
 build/
 local.properties
-apikey.properties
+secret/apikey.properties
 *.log
 captures/
 .externalNativeBuild/
