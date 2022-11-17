@@ -1,6 +1,5 @@
 package by.coolightman.weather.ui.screen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.coolightman.weather.data.remote.service.ApiService
@@ -22,17 +21,7 @@ class BaseViewModel(
 
     private fun fetchWeatherStamp() {
         viewModelScope.launch {
-            try {
-                val response = apiService.getWeatherStamp("Minsk")
-                Log.d("WEATHER_TAG", "response: $response")
-                if (response.isSuccessful){
-                    response.body()?.let {
-                        Log.d("WEATHER_TAG", "body: $it")
-                    }
-                }
-            } catch (e: Exception) {
-                Log.d("WEATHER_TAG", "error: $e")
-            }
+
         }
     }
 }
