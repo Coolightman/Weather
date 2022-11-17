@@ -49,7 +49,7 @@ fun BaseScreen() {
     val scrollState = rememberScrollState()
 
     val daysWeatherList by remember {
-        mutableStateOf((1..10))
+        mutableStateOf((1..14))
     }
 
     Scaffold(
@@ -99,10 +99,10 @@ fun BaseScreen() {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(16.dp, 16.dp, 16.dp, 8.dp)
                 ) {
                     Text(
-                        text = "10 day forecast",
+                        text = "14 day forecast",
                         style = MaterialTheme.typography.h6.copy(
                             fontWeight = FontWeight.Bold
                         )
