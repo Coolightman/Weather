@@ -48,7 +48,7 @@ fun DayForecastCard(
                 modifier = Modifier.size(32.dp)
             )
 
-            SpacerVert(with = 24.dp)
+            SpacerVert(with = 16.dp)
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,8 +59,6 @@ fun DayForecastCard(
                 }
                 DegreeText(temp = maxTemp)
             }
-
-            SpacerVert(with = 12.dp)
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,

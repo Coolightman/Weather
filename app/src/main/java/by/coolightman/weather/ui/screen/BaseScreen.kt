@@ -80,7 +80,7 @@ fun BaseScreen(
                         state = lazyRowState,
                         verticalAlignment = Alignment.CenterVertically,
                         contentPadding = PaddingValues(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
                         modifier = Modifier.fillMaxSize()
                     ) {
                         item {
@@ -115,12 +115,13 @@ fun BaseScreen(
                     SpacerHorizon(height = 12.dp)
 
                     if (uiState.days14Forecast.isNotEmpty()) {
-                        uiState.days14Forecast.forEach { dayWeather ->
+                        uiState.days14Forecast.forEachIndexed { index, dayWeather ->
                             DayForecastCard(
                                 date = dayWeather.datetimeEpoch,
                                 icon = dayWeather.icon,
                                 maxTemp = dayWeather.tempMax.toInt(),
-                                minTemp = dayWeather.tempMin.toInt()
+                                minTemp = dayWeather.tempMin.toInt(),
+                                isFirst = index == 0
                             )
                         }
                     } else {

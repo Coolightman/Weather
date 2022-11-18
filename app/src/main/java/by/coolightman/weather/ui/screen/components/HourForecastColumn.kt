@@ -27,7 +27,7 @@ fun HourForecastColumn(
         verticalArrangement = Arrangement.SpaceEvenly,
         modifier = Modifier
             .fillMaxHeight()
-            .width(70.dp)
+            .width(65.dp)
     ) {
         Text(
             text = item.datetimeEpoch.toFormattedTime(),
