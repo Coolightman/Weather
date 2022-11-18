@@ -15,7 +15,7 @@ fun HourWeatherDto.toDbModel(stampId: Long): HourWeatherDb = HourWeatherDb(
 fun HourWeatherDb.toModel(): HourWeather = HourWeather(
     id,
     stampId,
-    datetimeEpoch,
+    datetimeEpoch * 1000,
     temp,
     icon
 )

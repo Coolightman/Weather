@@ -32,6 +32,7 @@ import by.coolightman.weather.ui.screen.components.DayForecastCard
 import by.coolightman.weather.ui.screen.components.EmptyDaysForecastList
 import by.coolightman.weather.ui.screen.components.HourForecastColumn
 import by.coolightman.weather.ui.screen.components.ImagedBlock
+import by.coolightman.weather.ui.screen.components.LastRefresh
 import by.coolightman.weather.ui.screen.components.NowParamsBlock
 import by.coolightman.weather.ui.screen.components.NowWeatherBlock
 import by.coolightman.weather.ui.screen.components.SpacerHorizon
@@ -69,6 +70,8 @@ fun BaseScreen(
                     .verticalScroll(scrollState)
             ) {
                 ImagedBlock(image = painterResource(R.drawable.good_weather_day)) {
+                    LastRefresh(uiState.lastRefresh)
+
                     NowWeatherBlock(
                         temp = uiState.temp,
                         icon = uiState.icon,

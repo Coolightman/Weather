@@ -39,7 +39,10 @@ class BaseViewModel(
                         pressure = stamp.currentConditions.pressure.toInt(),
                         humidity = stamp.currentConditions.humidity.toInt(),
                         hours24Forecast = stamp.hours24Forecast,
-                        days14Forecast = stamp.days14Forecast
+                        days14Forecast = stamp.days14Forecast,
+                        lastRefresh = stamp.createdAt,
+                        sunrise = stamp.currentConditions.sunriseEpoch,
+                        sunset = stamp.currentConditions.sunsetEpoch
                     )
                 }
             }
@@ -48,7 +51,7 @@ class BaseViewModel(
 
     private fun fetchWeatherStamp() {
         viewModelScope.launch{
-            fetchWeatherDataByCityUseCase("grodno").collectLatest {
+            fetchWeatherDataByCityUseCase("волковыск").collectLatest {
                 _uiState.update { currentState ->
                     currentState.copy(apiState = it)
                 }
@@ -57,6 +60,6 @@ class BaseViewModel(
     }
 
     fun onClickRefresh() {
-//        fetchWeatherStamp()
+        fetchWeatherStamp()
     }
 }

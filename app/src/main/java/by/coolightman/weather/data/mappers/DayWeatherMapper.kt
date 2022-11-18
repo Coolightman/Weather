@@ -16,7 +16,7 @@ fun DayWeatherDto.toDbModel(stampId: Long): DayWeatherDb = DayWeatherDb(
 fun DayWeatherDb.toModel():DayWeather = DayWeather(
     id,
     stampId,
-    datetimeEpoch,
+    datetimeEpoch * 1000,
     tempMax,
     tempMin,
     icon

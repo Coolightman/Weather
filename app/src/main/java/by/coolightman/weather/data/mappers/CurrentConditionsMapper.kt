@@ -25,7 +25,7 @@ fun CurrentConditionsDto.toDbModel(stampId: Long): CurrentConditionsDb = Current
 fun CurrentConditionsDb.toModel(): CurrentConditions = CurrentConditions(
     id,
     stampId,
-    datetimeEpoch,
+    datetimeEpoch * 1000,
     temp,
     feelsLike,
     humidity,
@@ -35,7 +35,7 @@ fun CurrentConditionsDb.toModel(): CurrentConditions = CurrentConditions(
     pressure,
     conditions,
     icon,
-    sunriseEpoch,
-    sunsetEpoch,
+    sunriseEpoch * 1000,
+    sunsetEpoch * 1000,
     moonPhase
 )

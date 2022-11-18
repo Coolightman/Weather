@@ -30,7 +30,8 @@ class WeatherRepositoryImpl(
             if (list.isNotEmpty()) {
                 val lastConditions = list.last().toModel()
                 val days14Forecast = weatherDao.getDays(lastConditions.stampId).map { it.toModel() }
-                val hours24Forecast = weatherDao.getHours(lastConditions.stampId).map { it.toModel() }
+                val hours24Forecast =
+                    weatherDao.getHours(lastConditions.stampId).map { it.toModel() }
                 deletePreviousStamps(lastConditions.stampId)
                 weatherDao.getAllWeatherStamp(lastConditions.stampId)
                     .toModel(lastConditions, days14Forecast, hours24Forecast)
@@ -84,7 +85,7 @@ class WeatherRepositoryImpl(
         val twoDaysHours = mutableListOf<HourWeatherDto>()
         stampDto.days.take(2).forEach { twoDaysHours.addAll(it.hours) }
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        return twoDaysHours.drop(currentHour).take(24)
+        return twoDaysHours.drop(currentHour + 1).take(24)
     }
 
     private fun takeNext14Days(stampDto: WeatherStampDto): List<DayWeatherDto> {

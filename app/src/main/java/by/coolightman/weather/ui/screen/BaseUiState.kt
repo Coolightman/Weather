@@ -16,5 +16,8 @@ data class BaseUiState(
     val pressure: Int = 0,
     val humidity: Int = 0,
     val hours24Forecast: List<HourWeather> = emptyList(),
-    val days14Forecast: List<DayWeather> = emptyList()
+    val days14Forecast: List<DayWeather> = emptyList(),
+    val lastRefresh: Long = 0,
+    val sunrise: Long = 0,
+    val sunset: Long = 0
 )
