@@ -9,7 +9,7 @@ import java.util.Locale
 
 fun Long.toMonthDay(): String {
     val calendar = Calendar.getInstance().apply {
-        timeInMillis = this@toMonthDay
+        timeInMillis = this@toMonthDay * 1000
     }
     val month = getMonthName(calendar)
     val day = getDayOfMonth(calendar)
@@ -19,7 +19,7 @@ fun Long.toMonthDay(): String {
 @SuppressLint("SimpleDateFormat")
 fun Long.toDayOfWeek(): String {
     val calendar = Calendar.getInstance().apply {
-        timeInMillis = this@toDayOfWeek
+        timeInMillis = this@toDayOfWeek * 1000
     }
 
     val format = SimpleDateFormat("EEEE")
@@ -30,7 +30,7 @@ fun Long.toFormattedTime(): String {
     if (this == 0L) return ""
     val format =
         DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault())
-    return format.format(Date(this))
+    return format.format(Date(this * 1000))
 }
 
 private fun getDayOfMonth(calendar: Calendar): Int = calendar.get(Calendar.DAY_OF_MONTH)

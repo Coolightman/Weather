@@ -21,7 +21,7 @@ class BaseViewModel(
 
     init {
 //        fetchWeatherStamp()
-//        getLastWeatherStamp()
+        getLastWeatherStamp()
     }
 
     private fun getLastWeatherStamp() {
@@ -54,5 +54,9 @@ class BaseViewModel(
                 }
             }
         }
+    }
+
+    fun onClickRefresh() {
+//        fetchWeatherStamp()
     }
 }

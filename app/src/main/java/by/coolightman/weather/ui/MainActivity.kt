@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
                     val uiState by viewModel.uiState.collectAsState()
                     BaseScreen(
                         uiState = uiState,
-                        onClickRefresh = {}
+                        onClickRefresh = { viewModel.onClickRefresh()}
                     )
                 }
             }

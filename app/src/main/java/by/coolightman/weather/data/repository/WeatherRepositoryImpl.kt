@@ -9,6 +9,7 @@ import by.coolightman.weather.data.remote.dto.HourWeatherDto
 import by.coolightman.weather.data.remote.dto.WeatherStampDto
 import by.coolightman.weather.data.remote.service.ApiService
 import by.coolightman.weather.domain.model.ApiState
+import by.coolightman.weather.domain.model.EmptyWeatherStamp
 import by.coolightman.weather.domain.model.WeatherStamp
 import by.coolightman.weather.domain.repository.WeatherRepository
 import kotlinx.coroutines.Dispatchers
@@ -26,27 +27,15 @@ class WeatherRepositoryImpl(
 
     override fun getLastWeatherStamp(): Flow<WeatherStamp> =
         weatherDao.getAllCurrentConditions().map { list ->
-            val lastConditions = list.last().toModel()
-            val days14Forecast = weatherDao.getDays(lastConditions.stampId).map { it.toModel() }
-            val hours24Forecast = weatherDao.getHours(lastConditions.stampId).map { it.toModel() }
-            deletePreviousStamps(lastConditions.stampId)
-            weatherDao.getAllWeatherStamp(lastConditions.stampId)
-                .toModel(lastConditions, days14Forecast, hours24Forecast)
+            if (list.isNotEmpty()) {
+                val lastConditions = list.last().toModel()
+                val days14Forecast = weatherDao.getDays(lastConditions.stampId).map { it.toModel() }
+                val hours24Forecast = weatherDao.getHours(lastConditions.stampId).map { it.toModel() }
+                deletePreviousStamps(lastConditions.stampId)
+                weatherDao.getAllWeatherStamp(lastConditions.stampId)
+                    .toModel(lastConditions, days14Forecast, hours24Forecast)
+            } else EmptyWeatherStamp.stamp
         }
-
-//    override fun getLastWeatherStamp(): Flow<WeatherStamp> = flow {
-//        val stampsDb = weatherDao.getAllWeatherStamps()
-//        if (stampsDb.isNotEmpty()) {
-//            val lastStampDb = stampsDb.last()
-//            val currentConditions = weatherDao.getCurrentConditions(lastStampDb.id).toModel()
-//            val days14Forecast = weatherDao.getDays(lastStampDb.id).map { it.toModel() }
-//            val hours24Forecast = weatherDao.getHours(lastStampDb.id).map { it.toModel() }
-//            val weatherStamp =
-//                lastStampDb.toModel(currentConditions, days14Forecast, hours24Forecast)
-//            emit(weatherStamp)
-//            deletePreviousStamps(stampsDb)
-//        }
-//    }
 
     private suspend fun deletePreviousStamps(currentStampId: Long) {
         weatherDao.getAllWeatherStamps()

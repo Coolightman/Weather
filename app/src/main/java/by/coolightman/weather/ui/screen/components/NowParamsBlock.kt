@@ -29,7 +29,7 @@ fun NowParamsBlock(
         verticalArrangement = Arrangement.SpaceEvenly,
         modifier = Modifier
             .fillMaxHeight()
-            .width(200.dp)
+            .width(180.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Icon(

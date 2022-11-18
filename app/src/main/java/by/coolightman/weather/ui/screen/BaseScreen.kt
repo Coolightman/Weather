@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import by.coolightman.weather.R
 import by.coolightman.weather.domain.model.HourWeather
+import by.coolightman.weather.ui.screen.components.DayForecastCard
 import by.coolightman.weather.ui.screen.components.EmptyDaysForecastList
 import by.coolightman.weather.ui.screen.components.HourForecastColumn
 import by.coolightman.weather.ui.screen.components.ImagedBlock
@@ -115,7 +116,12 @@ fun BaseScreen(
 
                     if (uiState.days14Forecast.isNotEmpty()) {
                         uiState.days14Forecast.forEach { dayWeather ->
-
+                            DayForecastCard(
+                                date = dayWeather.datetimeEpoch,
+                                icon = dayWeather.icon,
+                                maxTemp = dayWeather.tempMax.toInt(),
+                                minTemp = dayWeather.tempMin.toInt()
+                            )
                         }
                     } else {
                         EmptyDaysForecastList()
