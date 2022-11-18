@@ -10,9 +10,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -42,13 +39,10 @@ fun NowWeatherBlock(
                 text = "${temp.updateSign()}$DEGREE_UNIT",
                 style = MaterialTheme.typography.h2.copy(
                     fontWeight = FontWeight.Normal,
-                    shadow = Shadow(
-                        color = Color.Black.copy(0.5f),
-                        offset = Offset(1f, 1f),
-                        blurRadius = 8f
-                    )
                 )
             )
+
+            SpacerVert(with = 8.dp)
 
             Image(
                 painter = painterResource(id = icon.getIconRes()),

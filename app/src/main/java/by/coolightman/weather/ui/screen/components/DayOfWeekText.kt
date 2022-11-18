@@ -9,10 +9,16 @@ import by.coolightman.weather.ui.theme.ColorAccent
 @Composable
 fun DayOfWeekText(
     modifier: Modifier = Modifier,
-    text: String
+    text: String,
+    isToday: Boolean = false,
+    isTomorrow: Boolean = false
 ) {
     Text(
-        text = text,
+        text = if (isToday) {
+            "Today"
+        } else if (isTomorrow) {
+            "Tomorrow"
+        } else text,
         color = if (text.equals("Saturday") || text.equals("Sunday")) ColorAccent
         else MaterialTheme.colors.onSurface,
         modifier = modifier

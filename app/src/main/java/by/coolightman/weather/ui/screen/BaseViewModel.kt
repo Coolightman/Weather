@@ -51,7 +51,7 @@ class BaseViewModel(
 
     private fun fetchWeatherStamp() {
         viewModelScope.launch{
-            fetchWeatherDataByCityUseCase("волковыск").collectLatest {
+            fetchWeatherDataByCityUseCase("гродно").collectLatest {
                 _uiState.update { currentState ->
                     currentState.copy(apiState = it)
                 }

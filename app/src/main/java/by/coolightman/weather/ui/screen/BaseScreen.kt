@@ -36,6 +36,7 @@ import by.coolightman.weather.ui.screen.components.LastRefresh
 import by.coolightman.weather.ui.screen.components.NowParamsBlock
 import by.coolightman.weather.ui.screen.components.NowWeatherBlock
 import by.coolightman.weather.ui.screen.components.SpacerHorizon
+import by.coolightman.weather.ui.screen.components.SunSetRiseRow
 import by.coolightman.weather.ui.screen.components.WeatherTopBar
 import by.coolightman.weather.ui.theme.WeatherTheme
 import kotlinx.coroutines.launch
@@ -82,9 +83,9 @@ fun BaseScreen(
                     LazyRow(
                         state = lazyRowState,
                         verticalAlignment = Alignment.CenterVertically,
-                        contentPadding = PaddingValues(16.dp),
+                        contentPadding = PaddingValues(horizontal = 16.dp),
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.weight(1f)
                     ) {
                         item {
                             NowParamsBlock(
@@ -101,6 +102,11 @@ fun BaseScreen(
                             HourForecastColumn(item = item)
                         }
                     }
+
+                    SunSetRiseRow(
+                        sunrise = uiState.sunrise,
+                        sunset = uiState.sunset
+                    )
                 }
 
                 Column(
@@ -124,7 +130,7 @@ fun BaseScreen(
                                 icon = dayWeather.icon,
                                 maxTemp = dayWeather.tempMax.toInt(),
                                 minTemp = dayWeather.tempMin.toInt(),
-                                isFirst = index == 0
+                                index = index
                             )
                         }
                     } else {
@@ -139,28 +145,32 @@ fun BaseScreen(
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
 private fun BaseScreenPreview() {
+    val time = System.currentTimeMillis()
     WeatherTheme {
         BaseScreen(
             uiState = BaseUiState(
+                sunrise = time,
+                sunset = time,
+                lastRefresh = time,
                 hours24Forecast = listOf(
                     HourWeather(
                         id = 1,
                         stampId = 1,
-                        datetimeEpoch = System.currentTimeMillis(),
+                        datetimeEpoch = time,
                         temp = 4.0,
                         icon = "rain-snow"
                     ),
                     HourWeather(
                         id = 2,
                         stampId = 1,
-                        datetimeEpoch = System.currentTimeMillis(),
+                        datetimeEpoch = time,
                         temp = -4.0,
                         icon = "snow"
                     ),
                     HourWeather(
                         id = 3,
                         stampId = 1,
-                        datetimeEpoch = System.currentTimeMillis(),
+                        datetimeEpoch = time,
                         temp = 0.0,
                         icon = "snow-showers-night"
                     )

@@ -26,7 +26,7 @@ fun DayForecastCard(
     icon: String,
     maxTemp: Int,
     minTemp: Int,
-    isFirst: Boolean = false
+    index: Int
 ) {
     DayForecastCardContainer {
         Row(
@@ -37,7 +37,11 @@ fun DayForecastCard(
         ) {
             Column {
                 GrayText(text = date.toMonthDay())
-                DayOfWeekText(text = date.toDayOfWeek())
+                DayOfWeekText(
+                    text = date.toDayOfWeek(),
+                    isToday = index == 0,
+                    isTomorrow = index == 1
+                )
             }
 
             Spacer(modifier = Modifier.weight(1f))
@@ -54,7 +58,7 @@ fun DayForecastCard(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.width(48.dp)
             ) {
-                if (isFirst) {
+                if (index == 0) {
                     GrayText(text = "Max")
                 }
                 DegreeText(temp = maxTemp)
@@ -64,7 +68,7 @@ fun DayForecastCard(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.width(48.dp)
             ) {
-                if (isFirst) {
+                if (index == 0) {
                     GrayText(text = "Min")
                 }
                 DegreeText(temp = minTemp, isGray = true)
@@ -82,7 +86,7 @@ private fun Preview() {
             icon = "clear-day",
             maxTemp = -3,
             minTemp = -5,
-            isFirst = true
+            index = 0
         )
     }
 }
