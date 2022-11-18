@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import by.coolightman.weather.R
@@ -29,7 +30,7 @@ fun WeatherTopBar(
     secondText: String = "",
     background: Color = MaterialTheme.colors.background,
     onClickMenu: () -> Unit,
-    onClickReload: () -> Unit
+    onClickRefresh: () -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -58,20 +59,24 @@ fun WeatherTopBar(
         ) {
             Text(
                 text = mainText,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             if (secondText.isNotEmpty()) {
                 Text(
                     text = secondText,
                     fontSize = 14.sp,
-                    color = MaterialTheme.colors.onSurface.copy(0.5f)
+                    color = MaterialTheme.colors.onSurface.copy(0.5f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
 
             }
         }
 
         IconButton(
-            onClick = { onClickReload() },
+            onClick = { onClickRefresh() },
             modifier = Modifier.padding(end = 4.dp)
         ) {
             Icon(

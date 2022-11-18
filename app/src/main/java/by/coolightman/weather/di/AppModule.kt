@@ -5,6 +5,8 @@ import by.coolightman.weather.data.local.AppDatabase
 import by.coolightman.weather.data.remote.service.ApiService
 import by.coolightman.weather.data.repository.WeatherRepositoryImpl
 import by.coolightman.weather.domain.repository.WeatherRepository
+import by.coolightman.weather.domain.usecase.FetchWeatherDataByCityUseCase
+import by.coolightman.weather.domain.usecase.GetLasWeatherStampUseCase
 import by.coolightman.weather.ui.screen.BaseViewModel
 import by.coolightman.weather.util.API_URL_ROOT
 import by.coolightman.weather.util.DB_NAME
@@ -17,6 +19,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val viewModelModule = module {
     viewModelOf(::BaseViewModel)
+}
+
+val useCaseModule = module {
+    single { FetchWeatherDataByCityUseCase(get()) }
+    single { GetLasWeatherStampUseCase(get()) }
 }
 
 val repositoryModule = module {
@@ -49,6 +56,7 @@ val apiModule = module {
 val appModule = module {
     includes(
         viewModelModule,
+        useCaseModule,
         repositoryModule,
         databaseModule,
         apiModule

@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import by.coolightman.weather.util.DEGREE_UNIT
 
 @Composable
 fun NowWeatherBlock(
@@ -36,7 +37,7 @@ fun NowWeatherBlock(
             modifier = Modifier.fillMaxHeight(0.5f)
         ) {
             Text(
-                text = "$temp°",
+                text = "$temp$DEGREE_UNIT",
                 style = MaterialTheme.typography.h2.copy(
                     fontWeight = FontWeight.Normal,
                     shadow = Shadow(
@@ -60,7 +61,7 @@ fun NowWeatherBlock(
         )
 
         Text(
-            text = "Feels like $feelTemp°",
+            text = "Feels like $feelTemp$DEGREE_UNIT",
             fontSize = 16.sp,
             color = MaterialTheme.colors.onSurface.copy(0.6f)
         )

@@ -8,3 +8,4 @@ const val API_UNIT_PARAM = "unitGroup"
 const val API_UNIT_METRIC = "metric"
 
 const val DB_NAME = "weatherAppDb.db"
+const val DEGREE_UNIT = "°"

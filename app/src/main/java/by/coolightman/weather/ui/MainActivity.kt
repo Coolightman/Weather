@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import by.coolightman.weather.ui.screen.BaseScreen
 import by.coolightman.weather.ui.screen.BaseViewModel
@@ -37,7 +39,11 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val viewModel: BaseViewModel = koinViewModel()
-                    BaseScreen()
+                    val uiState by viewModel.uiState.collectAsState()
+                    BaseScreen(
+                        uiState = uiState,
+                        onClickRefresh = {}
+                    )
                 }
             }
         }

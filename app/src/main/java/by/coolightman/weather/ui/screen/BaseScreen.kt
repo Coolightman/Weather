@@ -7,21 +7,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import by.coolightman.weather.R
+import by.coolightman.weather.ui.screen.components.EmptyDaysForecastList
 import by.coolightman.weather.ui.screen.components.ImagedBlock
 import by.coolightman.weather.ui.screen.components.NowParamsBlock
 import by.coolightman.weather.ui.screen.components.NowWeatherBlock
@@ -41,16 +37,15 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun BaseScreen() {
+fun BaseScreen(
+    uiState: BaseUiState,
+    onClickRefresh: () -> Unit
+) {
 
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val lazyRowState = rememberLazyListState()
     val scrollState = rememberScrollState()
-
-    val daysWeatherList by remember {
-        mutableStateOf((1..14))
-    }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -62,7 +57,7 @@ fun BaseScreen() {
                 mainText = "Hrodna",
                 secondText = "district Folush",
                 onClickMenu = { scope.launch { scaffoldState.drawerState.open() } },
-                onClickReload = { }
+                onClickRefresh = { onClickRefresh() }
             )
 
             Column(
@@ -110,15 +105,12 @@ fun BaseScreen() {
 
                     SpacerHorizon(height = 12.dp)
 
-                    daysWeatherList.forEach { _ ->
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(56.dp)
-                        ) {
+                    if (uiState.days14Forecast.isNotEmpty()) {
+                        uiState.days14Forecast.forEach { dayWeather ->
 
                         }
-                        SpacerHorizon(height = 8.dp)
+                    } else {
+                        EmptyDaysForecastList()
                     }
                 }
             }
@@ -130,6 +122,9 @@ fun BaseScreen() {
 @Composable
 private fun BaseScreenPreview() {
     WeatherTheme {
-        BaseScreen()
+        BaseScreen(
+            uiState = BaseUiState(),
+            onClickRefresh = {}
+        )
     }
 }
