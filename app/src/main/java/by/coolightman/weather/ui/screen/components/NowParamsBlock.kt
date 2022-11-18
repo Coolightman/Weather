@@ -19,10 +19,10 @@ import by.coolightman.weather.R
 
 @Composable
 fun NowParamsBlock(
-    wind: String,
-    windDirection: String,
-    pressure: String,
-    humidity: String,
+    wind: Int,
+    windDirection: Int,
+    pressure: Int,
+    humidity: Int,
     tintedColor: Color = MaterialTheme.colors.onSurface.copy(0.7f)
 ) {
     Column(
@@ -39,7 +39,7 @@ fun NowParamsBlock(
             )
             SpacerVert(with = 12.dp)
             Text(
-                text = wind,
+                text = wind.toString(),
                 fontWeight = FontWeight.SemiBold
             )
             Text(
@@ -55,7 +55,7 @@ fun NowParamsBlock(
             )
             SpacerVert(with = 12.dp)
             Text(
-                text = pressure,
+                text = pressure.toString(),
                 fontWeight = FontWeight.SemiBold
             )
             Text(
@@ -71,7 +71,7 @@ fun NowParamsBlock(
             )
             SpacerVert(with = 12.dp)
             Text(
-                text = humidity,
+                text = humidity.toString(),
                 fontWeight = FontWeight.SemiBold
             )
             Text(

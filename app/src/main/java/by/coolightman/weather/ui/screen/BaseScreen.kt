@@ -54,8 +54,7 @@ fun BaseScreen(
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             WeatherTopBar(
-                mainText = "Hrodna",
-                secondText = "district Folush",
+                resolvedAddress = uiState.resolvedAddress,
                 onClickMenu = { scope.launch { scaffoldState.drawerState.open() } },
                 onClickRefresh = { onClickRefresh() }
             )
@@ -67,10 +66,10 @@ fun BaseScreen(
             ) {
                 ImagedBlock(image = painterResource(R.drawable.good_weather_day)) {
                     NowWeatherBlock(
-                        temp = "+3",
-                        icon = painterResource(R.drawable.cloudy),
-                        description = "Overcast",
-                        feelTemp = "-3"
+                        temp = uiState.temp,
+                        icon = uiState.icon,
+                        description = uiState.conditions,
+                        feelTemp = uiState.feelsLikeTemp
                     )
 
                     LazyRow(
@@ -82,10 +81,10 @@ fun BaseScreen(
                     ) {
                         item {
                             NowParamsBlock(
-                                wind = "4",
-                                windDirection = "NW",
-                                pressure = "748",
-                                humidity = "89"
+                                wind = uiState.windSpeed,
+                                windDirection = uiState.windDir,
+                                pressure = uiState.pressure,
+                                humidity = uiState.humidity
                             )
                         }
                     }

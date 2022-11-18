@@ -13,18 +13,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import by.coolightman.weather.util.DEGREE_UNIT
+import by.coolightman.weather.util.getIconRes
+import by.coolightman.weather.util.updateSign
 
 @Composable
 fun NowWeatherBlock(
-    temp: String,
-    icon: Painter,
+    temp: Int,
+    icon: String,
     description: String,
-    feelTemp: String
+    feelTemp: Int
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -37,7 +39,7 @@ fun NowWeatherBlock(
             modifier = Modifier.fillMaxHeight(0.5f)
         ) {
             Text(
-                text = "$temp$DEGREE_UNIT",
+                text = "${temp.updateSign()}$DEGREE_UNIT",
                 style = MaterialTheme.typography.h2.copy(
                     fontWeight = FontWeight.Normal,
                     shadow = Shadow(
@@ -49,9 +51,9 @@ fun NowWeatherBlock(
             )
 
             Image(
-                painter = icon,
+                painter = painterResource(id = icon.getIconRes()),
                 contentDescription = "weather icon",
-                modifier = Modifier.size(42.dp)
+                modifier = Modifier.size(48.dp)
             )
         }
 
@@ -61,7 +63,7 @@ fun NowWeatherBlock(
         )
 
         Text(
-            text = "Feels like $feelTemp$DEGREE_UNIT",
+            text = "Feels like ${feelTemp.updateSign()}$DEGREE_UNIT",
             fontSize = 16.sp,
             color = MaterialTheme.colors.onSurface.copy(0.6f)
         )

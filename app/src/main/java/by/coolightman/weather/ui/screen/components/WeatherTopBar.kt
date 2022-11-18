@@ -13,6 +13,9 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,12 +29,19 @@ import by.coolightman.weather.ui.theme.ColorAccent
 
 @Composable
 fun WeatherTopBar(
-    mainText: String,
-    secondText: String = "",
+    resolvedAddress: String,
     background: Color = MaterialTheme.colors.background,
     onClickMenu: () -> Unit,
     onClickRefresh: () -> Unit
 ) {
+    val mainText by remember(resolvedAddress) {
+        mutableStateOf(resolvedAddress.toMainText())
+    }
+
+    val secondText by remember(resolvedAddress) {
+        mutableStateOf(resolvedAddress.toSecondText())
+    }
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -85,5 +95,24 @@ fun WeatherTopBar(
                 tint = ColorAccent
             )
         }
+    }
+}
+
+private fun String.toMainText(): String {
+    return if (this.contains(", ")) {
+        val list = this.split(", ")
+        list[0]
+    } else {
+        this
+    }
+}
+
+
+private fun String.toSecondText(): String {
+    return if (this.contains(",")) {
+        val list = this.split(", ")
+        list.last().trim()
+    } else {
+        ""
     }
 }
