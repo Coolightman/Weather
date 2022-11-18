@@ -8,4 +8,4 @@ val GreenPalette3 = Color(0xFF005f3a)
 val YellowPalette1 = Color(0xFFfbd17d)
 
 val TintFilter = Color(0x33000000)
-val ColorAccent = Color(0xfff44336)
+val ColorAccent = Color(0xFFFA6156)

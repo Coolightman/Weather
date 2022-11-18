@@ -99,6 +99,6 @@ class WeatherRepositoryImpl(
     }
 
     private fun takeNext14Days(stampDto: WeatherStampDto): List<DayWeatherDto> {
-        return stampDto.days.drop(1).take(14)
+        return stampDto.days.take(14)
     }
 }
