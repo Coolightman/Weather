@@ -1,8 +1,11 @@
 package by.coolightman.weather.util
 
 import android.annotation.SuppressLint
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 fun Long.toMonthDay(): String {
     val calendar = Calendar.getInstance().apply {
@@ -21,6 +24,13 @@ fun Long.toDayOfWeek(): String {
 
     val format = SimpleDateFormat("EEEE")
     return format.format(calendar.time)
+}
+
+fun Long.toFormattedTime(): String {
+    if (this == 0L) return ""
+    val format =
+        DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault())
+    return format.format(Date(this))
 }
 
 private fun getDayOfMonth(calendar: Calendar): Int = calendar.get(Calendar.DAY_OF_MONTH)

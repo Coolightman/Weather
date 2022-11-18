@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -26,7 +27,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import by.coolightman.weather.R
+import by.coolightman.weather.domain.model.HourWeather
 import by.coolightman.weather.ui.screen.components.EmptyDaysForecastList
+import by.coolightman.weather.ui.screen.components.HourForecastColumn
 import by.coolightman.weather.ui.screen.components.ImagedBlock
 import by.coolightman.weather.ui.screen.components.NowParamsBlock
 import by.coolightman.weather.ui.screen.components.NowWeatherBlock
@@ -87,6 +90,12 @@ fun BaseScreen(
                                 humidity = uiState.humidity
                             )
                         }
+                        items(
+                            items = uiState.hours24Forecast,
+                            key = { it.id }
+                        ) { item: HourWeather ->
+                            HourForecastColumn(item = item)
+                        }
                     }
                 }
 
@@ -122,7 +131,31 @@ fun BaseScreen(
 private fun BaseScreenPreview() {
     WeatherTheme {
         BaseScreen(
-            uiState = BaseUiState(),
+            uiState = BaseUiState(
+                hours24Forecast = listOf(
+                    HourWeather(
+                        id = 1,
+                        stampId = 1,
+                        datetimeEpoch = System.currentTimeMillis(),
+                        temp = 4.0,
+                        icon = "rain-snow"
+                    ),
+                    HourWeather(
+                        id = 2,
+                        stampId = 1,
+                        datetimeEpoch = System.currentTimeMillis(),
+                        temp = -4.0,
+                        icon = "snow"
+                    ),
+                    HourWeather(
+                        id = 3,
+                        stampId = 1,
+                        datetimeEpoch = System.currentTimeMillis(),
+                        temp = 0.0,
+                        icon = "snow-showers-night"
+                    )
+                )
+            ),
             onClickRefresh = {}
         )
     }
