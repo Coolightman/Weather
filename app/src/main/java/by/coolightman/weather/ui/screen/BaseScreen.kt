@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -97,7 +98,7 @@ fun BaseScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         contentPadding = PaddingValues(horizontal = 16.dp),
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.height(130.dp)
                     ) {
                         item {
                             NowParamsBlock(
