@@ -2,6 +2,7 @@ package by.coolightman.weather.ui.screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import by.coolightman.weather.domain.model.ApiState
 import by.coolightman.weather.domain.usecase.FetchWeatherDataByCityUseCase
 import by.coolightman.weather.domain.usecase.GetLasWeatherStampUseCase
 import by.coolightman.weather.domain.usecase.preferences.GetStringPreferenceUseCase
@@ -46,7 +47,7 @@ class BaseViewModel(
 
     private fun getWeatherPlacePreferences() {
         viewModelScope.launch {
-            getStringPreferenceUseCase(PLACE_PREF_KEY, "London").collectLatest {
+            getStringPreferenceUseCase(PLACE_PREF_KEY, "Grodno").collectLatest {
                 _uiState.update { currentState ->
                     currentState.copy(currentPlace = it)
                 }
@@ -79,15 +80,29 @@ class BaseViewModel(
         }
     }
 
+    fun setNewPlace(place: String){
+        viewModelScope.launch {
+            putStringPreferenceUseCase(PLACE_PREF_KEY, place)
+            fetchWeatherStamp()
+        }
+    }
+
     private fun fetchWeatherStamp() {
         viewModelScope.launch {
-            fetchWeatherDataByCityUseCase("гродно").collectLatest {
+            val currentPlace = uiState.value.currentPlace
+            fetchWeatherDataByCityUseCase(currentPlace).collectLatest {
                 _uiState.update { currentState ->
+                    updateLastRefresh(it)
                     currentState.copy(apiState = it)
                 }
-                val now = System.currentTimeMillis()
-                putStringPreferenceUseCase(LAST_REFRESH_PREF_KEY, now.toString())
             }
+        }
+    }
+
+    private suspend fun updateLastRefresh(apiState: ApiState) {
+        if (apiState is ApiState.Success){
+            val now = System.currentTimeMillis()
+            putStringPreferenceUseCase(LAST_REFRESH_PREF_KEY, now.toString())
         }
     }
 
