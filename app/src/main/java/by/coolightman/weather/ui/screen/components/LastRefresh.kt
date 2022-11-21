@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import by.coolightman.weather.R
+import by.coolightman.weather.util.mirror
 import by.coolightman.weather.util.toFormattedTime
 
 @Composable
@@ -31,7 +32,7 @@ fun LastRefresh(lastRefresh: Long) {
             painter = painterResource(id = R.drawable.ic_round_cached_24),
             contentDescription = "reload",
             tint = MaterialTheme.colors.onSurface.copy(0.5f),
-            modifier = Modifier.size(14.dp)
+            modifier = Modifier.size(14.dp).mirror()
         )
 
         SpacerVert(with = 2.dp)

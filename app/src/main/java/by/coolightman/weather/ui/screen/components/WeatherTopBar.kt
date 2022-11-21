@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import by.coolightman.weather.R
 import by.coolightman.weather.ui.theme.ColorAccent
+import by.coolightman.weather.util.mirror
 
 @Composable
 fun WeatherTopBar(
@@ -92,7 +93,8 @@ fun WeatherTopBar(
             Icon(
                 painter = painterResource(id = R.drawable.ic_round_cached_24),
                 contentDescription = "reload",
-                tint = ColorAccent
+                tint = ColorAccent,
+                modifier = Modifier.mirror()
             )
         }
     }
