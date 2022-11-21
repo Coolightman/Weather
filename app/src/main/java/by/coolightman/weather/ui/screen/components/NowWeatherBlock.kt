@@ -28,7 +28,7 @@ fun NowWeatherBlock(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.height(150.dp)
+        modifier = Modifier.height(170.dp)
     ) {
         SpacerHorizon(height = 24.dp)
 
