@@ -92,9 +92,9 @@ class BaseViewModel(
             val currentPlace = uiState.value.currentPlace
             fetchWeatherDataByCityUseCase(currentPlace).collectLatest {
                 _uiState.update { currentState ->
-                    updateLastRefresh(it)
                     currentState.copy(apiState = it)
                 }
+                updateLastRefresh(it)
             }
         }
     }
