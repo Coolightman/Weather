@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,7 +47,7 @@ fun DayForecastCard(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Image(
+            Icon(
                 painter = painterResource(icon.getIconRes()),
                 contentDescription = "icon",
                 modifier = Modifier.size(32.dp)
