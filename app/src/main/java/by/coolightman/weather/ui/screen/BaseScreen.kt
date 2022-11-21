@@ -61,6 +61,7 @@ fun BaseScreen(
         Column(modifier = Modifier.fillMaxSize()) {
             WeatherTopBar(
                 resolvedAddress = uiState.resolvedAddress,
+                apiState = uiState.apiState,
                 onClickMenu = { scope.launch { scaffoldState.drawerState.open() } },
                 onClickRefresh = { onClickRefresh() }
             )

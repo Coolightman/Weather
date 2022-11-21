@@ -1,5 +1,10 @@
 package by.coolightman.weather.ui.screen.components
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -25,12 +31,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import by.coolightman.weather.R
+import by.coolightman.weather.domain.model.ApiState
 import by.coolightman.weather.ui.theme.ColorAccent
 import by.coolightman.weather.util.mirror
 
 @Composable
 fun WeatherTopBar(
     resolvedAddress: String,
+    apiState: ApiState,
     background: Color = MaterialTheme.colors.background,
     onClickMenu: () -> Unit,
     onClickRefresh: () -> Unit
@@ -42,6 +50,18 @@ fun WeatherTopBar(
     val secondText by remember(resolvedAddress) {
         mutableStateOf(resolvedAddress.toSecondText())
     }
+
+    val infiniteTransition = rememberInfiniteTransition()
+    val angle by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 1200,
+                easing = LinearEasing
+            )
+        )
+    )
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -85,18 +105,25 @@ fun WeatherTopBar(
 
             }
         }
-
         IconButton(
             onClick = { onClickRefresh() },
+            enabled = apiState !is ApiState.Loading,
             modifier = Modifier.padding(end = 4.dp)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_round_cached_24),
                 contentDescription = "reload",
                 tint = ColorAccent,
-                modifier = Modifier.mirror()
+                modifier = if (apiState is ApiState.Loading) {
+                    Modifier
+                        .mirror()
+                        .rotate(-angle)
+                } else {
+                    Modifier.mirror()
+                }
             )
         }
+
     }
 }
 
