@@ -4,28 +4,58 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.coolightman.weather.domain.usecase.FetchWeatherDataByCityUseCase
 import by.coolightman.weather.domain.usecase.GetLasWeatherStampUseCase
+import by.coolightman.weather.domain.usecase.preferences.GetStringPreferenceUseCase
+import by.coolightman.weather.domain.usecase.preferences.PutStringPreferenceUseCase
+import by.coolightman.weather.util.LAST_REFRESH_PREF_KEY
+import by.coolightman.weather.util.PLACE_PREF_KEY
+import by.coolightman.weather.util.THIRTY_MINUTES_MILLIS
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class BaseViewModel(
     val fetchWeatherDataByCityUseCase: FetchWeatherDataByCityUseCase,
-    val getLasWeatherStampUseCase: GetLasWeatherStampUseCase
+    val getLasWeatherStampUseCase: GetLasWeatherStampUseCase,
+    val getStringPreferenceUseCase: GetStringPreferenceUseCase,
+    val putStringPreferenceUseCase: PutStringPreferenceUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(BaseUiState())
     val uiState: StateFlow<BaseUiState> = _uiState.asStateFlow()
 
     init {
-//        fetchWeatherStamp()
         getLastWeatherStamp()
+        getWeatherPlacePreferences()
+        getLastRefreshDate()
+    }
+
+    private fun getLastRefreshDate() {
+        viewModelScope.launch {
+            val lastRefresh =
+                getStringPreferenceUseCase(LAST_REFRESH_PREF_KEY, "0").first().toLong()
+            val delay = System.currentTimeMillis() - lastRefresh
+            if (delay > THIRTY_MINUTES_MILLIS) {
+                fetchWeatherStamp()
+            }
+        }
+    }
+
+    private fun getWeatherPlacePreferences() {
+        viewModelScope.launch {
+            getStringPreferenceUseCase(PLACE_PREF_KEY, "London").collectLatest {
+                _uiState.update { currentState ->
+                    currentState.copy(currentPlace = it)
+                }
+            }
+        }
     }
 
     private fun getLastWeatherStamp() {
-        viewModelScope.launch{
+        viewModelScope.launch {
             getLasWeatherStampUseCase().collectLatest { stamp ->
                 _uiState.update { currentState ->
                     currentState.copy(
@@ -50,11 +80,13 @@ class BaseViewModel(
     }
 
     private fun fetchWeatherStamp() {
-        viewModelScope.launch{
+        viewModelScope.launch {
             fetchWeatherDataByCityUseCase("гродно").collectLatest {
                 _uiState.update { currentState ->
                     currentState.copy(apiState = it)
                 }
+                val now = System.currentTimeMillis()
+                putStringPreferenceUseCase(LAST_REFRESH_PREF_KEY, now.toString())
             }
         }
     }
