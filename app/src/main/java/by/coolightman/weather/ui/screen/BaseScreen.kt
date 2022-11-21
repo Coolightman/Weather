@@ -18,6 +18,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import by.coolightman.weather.R
+import by.coolightman.weather.domain.model.ApiState
 import by.coolightman.weather.domain.model.HourWeather
 import by.coolightman.weather.ui.screen.components.DayForecastCard
 import by.coolightman.weather.ui.screen.components.EmptyDaysForecastList
@@ -39,6 +41,7 @@ import by.coolightman.weather.ui.screen.components.SpacerHorizon
 import by.coolightman.weather.ui.screen.components.SunSetRiseRow
 import by.coolightman.weather.ui.screen.components.WeatherTopBar
 import by.coolightman.weather.ui.theme.WeatherTheme
+import by.coolightman.weather.util.getFormattedMessage
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -52,6 +55,14 @@ fun BaseScreen(
     val scope = rememberCoroutineScope()
     val lazyRowState = rememberLazyListState()
     val scrollState = rememberScrollState()
+
+    LaunchedEffect(uiState.apiState) {
+        if (uiState.apiState is ApiState.Failure) {
+            scaffoldState.snackbarHostState.showSnackbar(
+                message = uiState.apiState.error.getFormattedMessage()
+            )
+        }
+    }
 
     Scaffold(
         scaffoldState = scaffoldState,
