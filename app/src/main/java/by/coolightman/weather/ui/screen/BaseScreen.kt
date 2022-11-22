@@ -65,12 +65,18 @@ fun BaseScreen(
 
     LaunchedEffect(uiState.apiState) {
         if (uiState.apiState is ApiState.Failure) {
+            scaffoldState.drawerState.close()
             scaffoldState.snackbarHostState.showSnackbar(
                 message = uiState.apiState.error.getFormattedMessage()
             )
         }
         if (uiState.apiState is ApiState.Success){
             scaffoldState.drawerState.close()
+        }
+    }
+
+    LaunchedEffect(scaffoldState.drawerState.isClosed){
+        if (scaffoldState.drawerState.isClosed){
             keyboardController?.hide()
         }
     }
