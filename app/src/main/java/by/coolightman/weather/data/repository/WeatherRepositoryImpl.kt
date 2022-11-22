@@ -62,6 +62,11 @@ class WeatherRepositoryImpl(
                     setDataToDb(it)
                     emit(ApiState.Success(Unit))
                 }
+            } else{
+                response.errorBody()?.let {
+                    val errorMessage = it.string()
+                    throw RuntimeException(errorMessage)
+                }
             }
         } catch (error: Exception) {
             Log.e("WeatherRepositoryImpl", "error: $error")
