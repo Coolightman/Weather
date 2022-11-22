@@ -1,7 +1,9 @@
 package by.coolightman.weather.data.repository
 
 import android.util.Log
+import by.coolightman.weather.data.local.dao.PlaceDao
 import by.coolightman.weather.data.local.dao.WeatherDao
+import by.coolightman.weather.data.local.modelDb.PlaceDb
 import by.coolightman.weather.data.mappers.toDbModel
 import by.coolightman.weather.data.mappers.toModel
 import by.coolightman.weather.data.remote.dto.DayWeatherDto
@@ -15,6 +17,7 @@ import by.coolightman.weather.domain.model.WeatherStamp
 import by.coolightman.weather.domain.repository.WeatherRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -23,7 +26,8 @@ import java.util.Calendar
 
 class WeatherRepositoryImpl(
     private val apiService: ApiService,
-    private val weatherDao: WeatherDao
+    private val weatherDao: WeatherDao,
+    private val placeDao: PlaceDao
 ) : WeatherRepository {
 
     override fun getLastWeatherStamp(): Flow<WeatherStamp> =
@@ -63,7 +67,7 @@ class WeatherRepositoryImpl(
                     setDataToDb(it)
                     emit(ApiState.Success(Unit))
                 }
-            } else{
+            } else {
                 response.errorBody()?.let {
                     val errorMessage = it.string()
                     throw ResponseException(errorMessage)
@@ -84,7 +88,47 @@ class WeatherRepositoryImpl(
             weatherDao.insertDaysForecast(daysDto.map { it.toDbModel(stampId) })
             weatherDao.insertHoursForecast(hoursDto.map { it.toDbModel(stampId) })
             weatherDao.insertCurrentConditions(currentConditionsDto.toDbModel(stampId))
+            val place = PlaceDb(
+                address = stampDto.address.toString(),
+                resolvedAddress = stampDto.resolvedAddress.toString(),
+                selected = true
+            )
+            addPlace(place)
         }
+    }
+
+    private suspend fun addPlace(placeDb: PlaceDb) {
+        val list = placeDao.getAllFlow().first()
+        if (isPlaceExist(placeDb, list)) {
+            setPlaceToSelected(placeDb, list)
+        } else {
+            unselectAllCurrentPlaces(list)
+            placeDao.insert(placeDb)
+        }
+    }
+
+    private suspend fun unselectAllCurrentPlaces(list: List<PlaceDb>) {
+        val updated = list.map { it.copy(selected = false) }
+        placeDao.updateList(updated)
+    }
+
+    private suspend fun setPlaceToSelected(placeDb: PlaceDb, list: List<PlaceDb>) {
+        val updated = list.map {
+            if (it.resolvedAddress == placeDb.resolvedAddress) {
+                it.copy(
+                    selected = true,
+                    address = placeDb.address
+                )
+            } else {
+                it.copy(selected = false)
+            }
+        }
+        placeDao.updateList(updated)
+    }
+
+    private fun isPlaceExist(place: PlaceDb, list: List<PlaceDb>): Boolean {
+        list.forEach { if (it.resolvedAddress == place.resolvedAddress) return true }
+        return false
     }
 
     private fun takeNext24Hours(stampDto: WeatherStampDto): List<HourWeatherDto> {
