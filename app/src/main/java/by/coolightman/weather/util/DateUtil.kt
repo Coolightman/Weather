@@ -22,7 +22,7 @@ fun Long.toDayOfWeek(): String {
         timeInMillis = this@toDayOfWeek
     }
 
-    val format = SimpleDateFormat("EEEE")
+    val format = SimpleDateFormat("EEEE", Locale.ENGLISH)
     return format.format(calendar.time)
 }
 
@@ -38,6 +38,6 @@ private fun getDayOfMonth(calendar: Calendar): Int = calendar.get(Calendar.DAY_O
 
 @SuppressLint("SimpleDateFormat")
 private fun getMonthName(calendar: Calendar): String {
-    val format = SimpleDateFormat("MMMM")
+    val format = SimpleDateFormat("MMMM", Locale.ENGLISH)
     return format.format(calendar.time)
 }
