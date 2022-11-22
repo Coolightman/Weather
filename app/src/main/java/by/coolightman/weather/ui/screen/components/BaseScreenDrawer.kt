@@ -1,5 +1,6 @@
 package by.coolightman.weather.ui.screen.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,8 +22,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import by.coolightman.weather.R
 import by.coolightman.weather.ui.theme.WeatherTheme
 
 @Composable
@@ -67,6 +70,17 @@ fun BaseScreenDrawer(
                 }
             },
             shape = CircleShape,
+            trailingIcon = {
+                if (place.isNotEmpty()) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_baseline_cancel_24),
+                        contentDescription = "clear",
+                        modifier = Modifier.clickable {
+                            place = ""
+                        }
+                    )
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)

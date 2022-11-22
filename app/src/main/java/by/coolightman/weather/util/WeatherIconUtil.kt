@@ -6,7 +6,11 @@ fun String.getIconRes(): Int {
     return WeatherIcons.list.getOrDefault(this, R.drawable.protection)
 }
 
-private object WeatherIcons{
+fun String.getBackgroundRes(): Int {
+    return WeatherBackground.list.getOrDefault(this, R.drawable.cloudy_day_bck)
+}
+
+private object WeatherIcons {
     val list: Map<String, Int> = mapOf(
         Pair("clear-day", R.drawable.clear_day),
         Pair("clear-night", R.drawable.clear_night),
@@ -30,5 +34,32 @@ private object WeatherIcons{
         Pair("thunder-showers-day", R.drawable.thunder_showers_day),
         Pair("thunder-showers-night", R.drawable.thunder_showers_night),
         Pair("wind", R.drawable.wind),
+    )
+}
+
+private object WeatherBackground {
+    val list: Map<String, Int> = mapOf(
+        Pair("clear-day", R.drawable.clear_day_bck),
+        Pair("clear-night", R.drawable.clear_night_bck),
+        Pair("cloudy", R.drawable.cloudy_day_bck),
+        Pair("fog", R.drawable.fog_bck),
+        Pair("hail", R.drawable.rain_night_bck),
+        Pair("partly-cloudy-day", R.drawable.partly_cloudy_day_bck),
+        Pair("partly-cloudy-night", R.drawable.partly_cloudy_night_bck),
+        Pair("rain", R.drawable.rain_day_bck),
+        Pair("rain-snow", R.drawable.rain_day_bck),
+        Pair("rain-snow-showers-day", R.drawable.rain_day_bck),
+        Pair("rain-snow-showers-night", R.drawable.rain_night_bck),
+        Pair("showers-day", R.drawable.rain_day_bck),
+        Pair("showers-night", R.drawable.rain_night_bck),
+        Pair("sleet", R.drawable.rain_night_bck),
+        Pair("snow", R.drawable.snow_day_bck),
+        Pair("snow-showers-day", R.drawable.snow_day_bck),
+        Pair("snow-showers-night", R.drawable.snow_night_bck),
+        Pair("thunder", R.drawable.thunder_bck),
+        Pair("thunder-rain", R.drawable.rain_night_bck),
+        Pair("thunder-showers-day", R.drawable.rain_day_bck),
+        Pair("thunder-showers-night", R.drawable.rain_night_bck),
+        Pair("wind", R.drawable.wind_bck)
     )
 }

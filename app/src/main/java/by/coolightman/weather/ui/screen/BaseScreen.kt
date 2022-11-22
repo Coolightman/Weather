@@ -26,11 +26,9 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import by.coolightman.weather.R
 import by.coolightman.weather.domain.model.ApiState
 import by.coolightman.weather.domain.model.HourWeather
 import by.coolightman.weather.ui.screen.components.BaseScreenDrawer
@@ -70,13 +68,13 @@ fun BaseScreen(
                 message = uiState.apiState.error.getFormattedMessage()
             )
         }
-        if (uiState.apiState is ApiState.Success){
+        if (uiState.apiState is ApiState.Success) {
             scaffoldState.drawerState.close()
         }
     }
 
-    LaunchedEffect(scaffoldState.drawerState.isClosed){
-        if (scaffoldState.drawerState.isClosed){
+    LaunchedEffect(scaffoldState.drawerState.isClosed) {
+        if (scaffoldState.drawerState.isClosed) {
             keyboardController?.hide()
         }
     }
@@ -103,7 +101,7 @@ fun BaseScreen(
                     .fillMaxSize()
                     .verticalScroll(scrollState)
             ) {
-                ImagedBlock(image = painterResource(R.drawable.good_weather_day)) {
+                ImagedBlock(image = uiState.icon) {
                     LastRefresh(uiState.lastRefresh)
 
                     NowWeatherBlock(
@@ -128,6 +126,7 @@ fun BaseScreen(
                                 humidity = uiState.humidity
                             )
                         }
+
                         items(
                             items = uiState.hours24Forecast,
                             key = { it.id }

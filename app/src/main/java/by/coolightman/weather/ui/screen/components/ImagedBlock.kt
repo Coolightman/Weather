@@ -11,14 +11,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import by.coolightman.weather.ui.theme.TintFilter
+import by.coolightman.weather.util.getBackgroundRes
 
 @Composable
 fun ImagedBlock(
-    image: Painter,
+    image: String,
     content: @Composable () -> Unit
 ) {
     Column(
@@ -29,7 +30,7 @@ fun ImagedBlock(
             .height(350.dp)
             .clip(RoundedCornerShape(0.dp, 0.dp, 32.dp, 32.dp))
             .paint(
-                painter = image,
+                painter = painterResource(image.getBackgroundRes()),
                 contentScale = ContentScale.FillWidth
             )
             .background(TintFilter)
