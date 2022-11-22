@@ -3,10 +3,12 @@ package by.coolightman.weather.ui.screen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.coolightman.weather.domain.model.ApiState
-import by.coolightman.weather.domain.usecase.FetchWeatherDataByCityUseCase
-import by.coolightman.weather.domain.usecase.GetLasWeatherStampUseCase
+import by.coolightman.weather.domain.usecase.place.DeletePlaceUseCase
+import by.coolightman.weather.domain.usecase.place.GetAllPlacesUseCase
 import by.coolightman.weather.domain.usecase.preferences.GetStringPreferenceUseCase
 import by.coolightman.weather.domain.usecase.preferences.PutStringPreferenceUseCase
+import by.coolightman.weather.domain.usecase.weather.FetchWeatherDataByCityUseCase
+import by.coolightman.weather.domain.usecase.weather.GetLasWeatherStampUseCase
 import by.coolightman.weather.util.LAST_REFRESH_PREF_KEY
 import by.coolightman.weather.util.PLACE_PREF_KEY
 import by.coolightman.weather.util.THIRTY_MINUTES_MILLIS
@@ -23,7 +25,9 @@ class BaseViewModel(
     private val fetchWeatherDataByCityUseCase: FetchWeatherDataByCityUseCase,
     private val getLasWeatherStampUseCase: GetLasWeatherStampUseCase,
     private val getStringPreferenceUseCase: GetStringPreferenceUseCase,
-    private val putStringPreferenceUseCase: PutStringPreferenceUseCase
+    private val putStringPreferenceUseCase: PutStringPreferenceUseCase,
+    private val getAllPlacesUseCase: GetAllPlacesUseCase,
+    private val deletePlaceUseCase: DeletePlaceUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(BaseUiState())
@@ -33,6 +37,17 @@ class BaseViewModel(
         getLastWeatherStamp()
         getWeatherPlacePreferences()
         getLastRefreshDate()
+        getPlaces()
+    }
+
+    private fun getPlaces() {
+        viewModelScope.launch {
+            getAllPlacesUseCase().collectLatest {
+                _uiState.update { currentState ->
+                    currentState.copy(places = it)
+                }
+            }
+        }
     }
 
     private fun getLastRefreshDate() {
@@ -89,6 +104,12 @@ class BaseViewModel(
         }
     }
 
+    fun deletePlace(placeId: Long) {
+        viewModelScope.launch {
+            deletePlaceUseCase(placeId)
+        }
+    }
+
     private fun fetchWeatherStampByPref() {
         viewModelScope.launch {
             val currentPlace = uiState.value.currentPlace
@@ -106,13 +127,13 @@ class BaseViewModel(
     }
 
     private suspend fun updatePlacePrefIfSuccess(apiState: ApiState, place: String) {
-        if (apiState is ApiState.Success){
+        if (apiState is ApiState.Success) {
             putStringPreferenceUseCase(PLACE_PREF_KEY, place)
         }
     }
 
     private suspend fun updateLastRefresh(apiState: ApiState) {
-        if (apiState is ApiState.Success){
+        if (apiState is ApiState.Success) {
             val now = System.currentTimeMillis()
             putStringPreferenceUseCase(LAST_REFRESH_PREF_KEY, now.toString())
         }

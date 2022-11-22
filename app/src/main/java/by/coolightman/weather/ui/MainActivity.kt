@@ -43,7 +43,8 @@ class MainActivity : ComponentActivity() {
                     BaseScreen(
                         uiState = uiState,
                         onClickRefresh = { viewModel.onClickRefresh() },
-                        onEnterPlace = { viewModel.fetchWeatherStampByPlace(it) }
+                        onEnterPlace = { viewModel.fetchWeatherStampByPlace(it) },
+                        onDeletePlace = { viewModel.deletePlace(it) }
                     )
                 }
             }

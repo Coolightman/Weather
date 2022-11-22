@@ -3,6 +3,7 @@ package by.coolightman.weather.ui.screen
 import by.coolightman.weather.domain.model.ApiState
 import by.coolightman.weather.domain.model.DayWeather
 import by.coolightman.weather.domain.model.HourWeather
+import by.coolightman.weather.domain.model.Place
 
 data class BaseUiState(
     val apiState: ApiState = ApiState.Empty,
@@ -20,5 +21,6 @@ data class BaseUiState(
     val lastRefresh: Long = 0,
     val sunrise: Long = 0,
     val sunset: Long = 0,
-    val currentPlace: String = ""
+    val currentPlace: String = "",
+    val places: List<Place> = emptyList()
 )

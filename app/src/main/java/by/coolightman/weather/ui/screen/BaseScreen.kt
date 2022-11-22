@@ -2,6 +2,7 @@ package by.coolightman.weather.ui.screen
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -52,7 +53,8 @@ import kotlinx.coroutines.launch
 fun BaseScreen(
     uiState: BaseUiState,
     onClickRefresh: () -> Unit,
-    onEnterPlace: (String) -> Unit
+    onEnterPlace: (String) -> Unit,
+    onDeletePlace: (Long) -> Unit
 ) {
 
     val scaffoldState = rememberScaffoldState()
@@ -79,12 +81,20 @@ fun BaseScreen(
         }
     }
 
+    BackHandler(scaffoldState.drawerState.isOpen) {
+        scope.launch {
+            scaffoldState.drawerState.close()
+        }
+    }
+
     Scaffold(
         scaffoldState = scaffoldState,
         drawerShape = RectangleShape,
         drawerContent = {
             BaseScreenDrawer(
-                onEnterPlace = { onEnterPlace(it) }
+                places = uiState.places,
+                onEnterPlace = { onEnterPlace(it) },
+                onDeletePlace = { onDeletePlace(it) }
             )
         }
     ) {
@@ -209,7 +219,8 @@ private fun BaseScreenPreview() {
                 )
             ),
             onClickRefresh = {},
-            onEnterPlace = {}
+            onEnterPlace = {},
+            onDeletePlace = {}
         )
     }
 }

@@ -1,4 +1,4 @@
-package by.coolightman.weather.domain.usecase
+package by.coolightman.weather.domain.usecase.weather
 
 import by.coolightman.weather.domain.repository.WeatherRepository
 

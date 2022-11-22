@@ -13,8 +13,10 @@ import by.coolightman.weather.data.repository.PlaceRepositoryImpl
 import by.coolightman.weather.domain.repository.PlaceRepository
 import by.coolightman.weather.domain.repository.PreferencesRepository
 import by.coolightman.weather.domain.repository.WeatherRepository
-import by.coolightman.weather.domain.usecase.FetchWeatherDataByCityUseCase
-import by.coolightman.weather.domain.usecase.GetLasWeatherStampUseCase
+import by.coolightman.weather.domain.usecase.place.DeletePlaceUseCase
+import by.coolightman.weather.domain.usecase.place.GetAllPlacesUseCase
+import by.coolightman.weather.domain.usecase.weather.FetchWeatherDataByCityUseCase
+import by.coolightman.weather.domain.usecase.weather.GetLasWeatherStampUseCase
 import by.coolightman.weather.domain.usecase.preferences.GetBooleanPreferenceUseCase
 import by.coolightman.weather.domain.usecase.preferences.GetStringPreferenceUseCase
 import by.coolightman.weather.domain.usecase.preferences.PutBooleanPreferenceUseCase
@@ -44,6 +46,8 @@ val useCaseModule = module {
     single { GetStringPreferenceUseCase(get()) }
     single { PutBooleanPreferenceUseCase(get()) }
     single { PutStringPreferenceUseCase(get()) }
+    single { GetAllPlacesUseCase(get()) }
+    single { DeletePlaceUseCase(get()) }
 }
 
 val repositoryModule = module {
