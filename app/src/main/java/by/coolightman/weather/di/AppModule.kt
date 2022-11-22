@@ -7,8 +7,10 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import by.coolightman.weather.data.local.AppDatabase
 import by.coolightman.weather.data.remote.service.ApiService
-import by.coolightman.weather.data.repository.WeatherRepositoryImpl
 import by.coolightman.weather.data.repository.PreferencesRepositoryImpl
+import by.coolightman.weather.data.repository.WeatherRepositoryImpl
+import by.coolightman.weather.data.repository.PlaceRepositoryImpl
+import by.coolightman.weather.domain.repository.PlaceRepository
 import by.coolightman.weather.domain.repository.PreferencesRepository
 import by.coolightman.weather.domain.repository.WeatherRepository
 import by.coolightman.weather.domain.usecase.FetchWeatherDataByCityUseCase
@@ -47,6 +49,7 @@ val useCaseModule = module {
 val repositoryModule = module {
     singleOf(::WeatherRepositoryImpl) { bind<WeatherRepository>() }
     singleOf(::PreferencesRepositoryImpl) { bind<PreferencesRepository>() }
+    singleOf(::PlaceRepositoryImpl) { bind<PlaceRepository>() }
 }
 
 val preferencesModule = module {
@@ -56,18 +59,18 @@ val preferencesModule = module {
 val databaseModule = module {
     single {
         Room.databaseBuilder(
-            get(),
-            AppDatabase::class.java,
-            DB_NAME
+            get(), AppDatabase::class.java, DB_NAME
         ).build()
     }
 
     single { get<AppDatabase>().weatherDao() }
+    single { get<AppDatabase>().placeDao() }
 }
 
 val apiModule = module {
     single {
-        Retrofit.Builder()
+        Retrofit
+            .Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(API_URL_ROOT)
             .build()
