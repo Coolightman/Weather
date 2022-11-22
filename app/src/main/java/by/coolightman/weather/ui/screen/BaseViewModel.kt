@@ -10,6 +10,7 @@ import by.coolightman.weather.domain.usecase.preferences.PutStringPreferenceUseC
 import by.coolightman.weather.util.LAST_REFRESH_PREF_KEY
 import by.coolightman.weather.util.PLACE_PREF_KEY
 import by.coolightman.weather.util.THIRTY_MINUTES_MILLIS
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -40,7 +41,7 @@ class BaseViewModel(
                 getStringPreferenceUseCase(LAST_REFRESH_PREF_KEY, "0").first().toLong()
             val delay = System.currentTimeMillis() - lastRefresh
             if (delay > THIRTY_MINUTES_MILLIS) {
-                fetchWeatherStamp()
+                fetchWeatherStampByPref()
             }
         }
     }
@@ -80,22 +81,33 @@ class BaseViewModel(
         }
     }
 
-    fun setNewPlace(place: String){
+    fun fetchWeatherStampByPlace(place: String) {
         viewModelScope.launch {
-            putStringPreferenceUseCase(PLACE_PREF_KEY, place)
-            fetchWeatherStamp()
+            fetchWeatherData(place)
+            delay(1500)
+            updatePlacePrefIfSuccess(uiState.value.apiState, place)
         }
     }
 
-    private fun fetchWeatherStamp() {
+    private fun fetchWeatherStampByPref() {
         viewModelScope.launch {
             val currentPlace = uiState.value.currentPlace
-            fetchWeatherDataByCityUseCase(currentPlace).collectLatest {
-                _uiState.update { currentState ->
-                    currentState.copy(apiState = it)
-                }
-                updateLastRefresh(it)
+            fetchWeatherData(currentPlace)
+        }
+    }
+
+    private suspend fun fetchWeatherData(place: String) {
+        fetchWeatherDataByCityUseCase(place).collectLatest {
+            _uiState.update { currentState ->
+                currentState.copy(apiState = it)
             }
+            updateLastRefresh(it)
+        }
+    }
+
+    private suspend fun updatePlacePrefIfSuccess(apiState: ApiState, place: String) {
+        if (apiState is ApiState.Success){
+            putStringPreferenceUseCase(PLACE_PREF_KEY, place)
         }
     }
 
@@ -107,6 +119,6 @@ class BaseViewModel(
     }
 
     fun onClickRefresh() {
-        fetchWeatherStamp()
+        fetchWeatherStampByPref()
     }
 }
