@@ -42,7 +42,8 @@ class MainActivity : ComponentActivity() {
                     val uiState by viewModel.uiState.collectAsState()
                     BaseScreen(
                         uiState = uiState,
-                        onClickRefresh = { viewModel.onClickRefresh()}
+                        onClickRefresh = { viewModel.onClickRefresh() },
+                        onEnterPlace = { viewModel.fetchWeatherStampByPlace(it) }
                     )
                 }
             }

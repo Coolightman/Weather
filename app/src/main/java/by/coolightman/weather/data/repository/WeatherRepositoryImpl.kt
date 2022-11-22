@@ -10,6 +10,7 @@ import by.coolightman.weather.data.remote.dto.WeatherStampDto
 import by.coolightman.weather.data.remote.service.ApiService
 import by.coolightman.weather.domain.model.ApiState
 import by.coolightman.weather.domain.model.EmptyWeatherStamp
+import by.coolightman.weather.domain.model.ResponseException
 import by.coolightman.weather.domain.model.WeatherStamp
 import by.coolightman.weather.domain.repository.WeatherRepository
 import kotlinx.coroutines.Dispatchers
@@ -65,7 +66,7 @@ class WeatherRepositoryImpl(
             } else{
                 response.errorBody()?.let {
                     val errorMessage = it.string()
-                    throw RuntimeException(errorMessage)
+                    throw ResponseException(errorMessage)
                 }
             }
         } catch (error: Exception) {

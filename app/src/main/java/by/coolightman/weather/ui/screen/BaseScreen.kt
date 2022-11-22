@@ -22,8 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import by.coolightman.weather.R
 import by.coolightman.weather.domain.model.ApiState
 import by.coolightman.weather.domain.model.HourWeather
+import by.coolightman.weather.ui.screen.components.BaseScreenDrawer
 import by.coolightman.weather.ui.screen.components.DayForecastCard
 import by.coolightman.weather.ui.screen.components.EmptyDaysForecastList
 import by.coolightman.weather.ui.screen.components.HourForecastColumn
@@ -45,17 +48,20 @@ import by.coolightman.weather.ui.theme.WeatherTheme
 import by.coolightman.weather.util.getFormattedMessage
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun BaseScreen(
     uiState: BaseUiState,
-    onClickRefresh: () -> Unit
+    onClickRefresh: () -> Unit,
+    onEnterPlace: (String) -> Unit
 ) {
 
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val lazyRowState = rememberLazyListState()
     val scrollState = rememberScrollState()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     LaunchedEffect(uiState.apiState) {
         if (uiState.apiState is ApiState.Failure) {
@@ -63,12 +69,20 @@ fun BaseScreen(
                 message = uiState.apiState.error.getFormattedMessage()
             )
         }
+        if (uiState.apiState is ApiState.Success){
+            scaffoldState.drawerState.close()
+            keyboardController?.hide()
+        }
     }
 
     Scaffold(
         scaffoldState = scaffoldState,
         drawerShape = RectangleShape,
-        drawerContent = {}
+        drawerContent = {
+            BaseScreenDrawer(
+                onEnterPlace = { onEnterPlace(it) }
+            )
+        }
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             WeatherTopBar(
@@ -189,7 +203,8 @@ private fun BaseScreenPreview() {
                     )
                 )
             ),
-            onClickRefresh = {}
+            onClickRefresh = {},
+            onEnterPlace = {}
         )
     }
 }

@@ -20,10 +20,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class BaseViewModel(
-    val fetchWeatherDataByCityUseCase: FetchWeatherDataByCityUseCase,
-    val getLasWeatherStampUseCase: GetLasWeatherStampUseCase,
-    val getStringPreferenceUseCase: GetStringPreferenceUseCase,
-    val putStringPreferenceUseCase: PutStringPreferenceUseCase
+    private val fetchWeatherDataByCityUseCase: FetchWeatherDataByCityUseCase,
+    private val getLasWeatherStampUseCase: GetLasWeatherStampUseCase,
+    private val getStringPreferenceUseCase: GetStringPreferenceUseCase,
+    private val putStringPreferenceUseCase: PutStringPreferenceUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(BaseUiState())
