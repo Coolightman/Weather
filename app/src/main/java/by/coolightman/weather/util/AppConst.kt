@@ -9,6 +9,8 @@ const val API_UNIT_PARAM = "unitGroup"
 const val API_UNIT_METRIC = "metric"
 const val API_LANG_PARAM = "lang"
 const val API_LANG_EN = "en"
+const val API_ICON_SET_PARAM = "iconSet"
+const val API_ICON_SET_2 = "icons2"
 
 const val DB_NAME = "weatherAppDb.db"
 const val DEGREE_UNIT = "°"
