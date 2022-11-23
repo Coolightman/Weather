@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -27,6 +28,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,13 +40,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import by.coolightman.weather.R
+import by.coolightman.weather.domain.model.ApiState
 import by.coolightman.weather.domain.model.Place
 import by.coolightman.weather.ui.theme.WeatherTheme
+import by.coolightman.weather.util.getFormattedMessage
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BaseScreenDrawer(
     places: List<Place>,
+    apiState: ApiState,
     onEnterPlace: (String) -> Unit,
     onDeletePlace: (Long) -> Unit
 ) {
@@ -54,8 +59,19 @@ fun BaseScreenDrawer(
         mutableStateOf("")
     }
 
-    var errorPlaceText by remember {
+    var isErrorPlace by remember {
         mutableStateOf(false)
+    }
+
+    var errorPlaceText by remember {
+        mutableStateOf("")
+    }
+
+    LaunchedEffect(apiState) {
+        if (apiState is ApiState.Failure) {
+            errorPlaceText = apiState.error.getFormattedMessage()
+            isErrorPlace = true
+        }
     }
 
     Column(
@@ -65,8 +81,8 @@ fun BaseScreenDrawer(
             value = place,
             onValueChange = {
                 place = it
-                if (errorPlaceText) {
-                    errorPlaceText = false
+                if (isErrorPlace) {
+                    isErrorPlace = false
                 }
             },
             placeholder = {
@@ -81,10 +97,10 @@ fun BaseScreenDrawer(
                     contentDescription = "search"
                 )
             },
-            isError = errorPlaceText,
+            isError = isErrorPlace,
             label = {
-                if (errorPlaceText) {
-                    Text(text = "Title too short")
+                if (isErrorPlace) {
+                    Text(text = errorPlaceText)
                 }
             },
             shape = CircleShape,
@@ -95,6 +111,7 @@ fun BaseScreenDrawer(
                         contentDescription = "clear",
                         modifier = Modifier.clickable {
                             place = ""
+                            isErrorPlace = false
                         }
                     )
                 }
@@ -110,7 +127,8 @@ fun BaseScreenDrawer(
                     if (place.length > 2) {
                         onEnterPlace(place)
                     } else {
-                        errorPlaceText = true
+                        errorPlaceText = "Title too short"
+                        isErrorPlace = true
                     }
                 },
                 shape = CircleShape,
@@ -160,7 +178,8 @@ fun BaseScreenDrawer(
                             IconButton(onClick = { onDeletePlace(place.id) }) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
-                                    contentDescription = "delete"
+                                    contentDescription = "delete",
+                                    modifier = Modifier.size(20.dp)
                                 )
                             }
                         }
@@ -179,9 +198,11 @@ private fun Preview() {
         Place(12, "grodno", "Гродна, Беларусь", true),
         Place(13, "minsk", "Менск, Беларусь", false)
     )
+    val apiState = ApiState.Failure(Throwable("check INTERNET connection"))
     WeatherTheme(true) {
         BaseScreenDrawer(
             places = places,
+            apiState = apiState,
             onEnterPlace = {},
             onDeletePlace = {}
         )

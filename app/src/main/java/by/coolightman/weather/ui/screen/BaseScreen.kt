@@ -65,7 +65,6 @@ fun BaseScreen(
 
     LaunchedEffect(uiState.apiState) {
         if (uiState.apiState is ApiState.Failure) {
-            scaffoldState.drawerState.close()
             scaffoldState.snackbarHostState.showSnackbar(
                 message = uiState.apiState.error.getFormattedMessage()
             )
@@ -93,6 +92,7 @@ fun BaseScreen(
         drawerContent = {
             BaseScreenDrawer(
                 places = uiState.places,
+                apiState = uiState.apiState,
                 onEnterPlace = { onEnterPlace(it) },
                 onDeletePlace = { onDeletePlace(it) }
             )
