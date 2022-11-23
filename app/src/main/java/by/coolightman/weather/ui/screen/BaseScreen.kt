@@ -114,41 +114,43 @@ fun BaseScreen(
                 ImagedBlock(image = uiState.icon) {
                     LastRefresh(uiState.lastRefresh)
 
-                    NowWeatherBlock(
-                        temp = uiState.temp,
-                        icon = uiState.icon,
-                        description = uiState.conditions,
-                        feelTemp = uiState.feelsLikeTemp
-                    )
+                    if (uiState.hours24Forecast.isNotEmpty()) {
+                        NowWeatherBlock(
+                            temp = uiState.temp,
+                            icon = uiState.icon,
+                            description = uiState.conditions,
+                            feelTemp = uiState.feelsLikeTemp
+                        )
 
-                    LazyRow(
-                        state = lazyRowState,
-                        verticalAlignment = Alignment.CenterVertically,
-                        contentPadding = PaddingValues(horizontal = 16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = Modifier.height(130.dp)
-                    ) {
-                        item {
-                            NowParamsBlock(
-                                wind = uiState.windSpeed,
-                                windDirection = uiState.windDir,
-                                pressure = uiState.pressure,
-                                humidity = uiState.humidity
-                            )
+                        LazyRow(
+                            state = lazyRowState,
+                            verticalAlignment = Alignment.CenterVertically,
+                            contentPadding = PaddingValues(horizontal = 16.dp),
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            modifier = Modifier.height(130.dp)
+                        ) {
+                            item {
+                                NowParamsBlock(
+                                    wind = uiState.windSpeed,
+                                    windDirection = uiState.windDir,
+                                    pressure = uiState.pressure,
+                                    humidity = uiState.humidity
+                                )
+                            }
+
+                            items(
+                                items = uiState.hours24Forecast,
+                                key = { it.id }
+                            ) { item: HourWeather ->
+                                HourForecastColumn(item = item)
+                            }
                         }
 
-                        items(
-                            items = uiState.hours24Forecast,
-                            key = { it.id }
-                        ) { item: HourWeather ->
-                            HourForecastColumn(item = item)
-                        }
+                        SunSetRiseRow(
+                            sunrise = uiState.sunrise,
+                            sunset = uiState.sunset
+                        )
                     }
-
-                    SunSetRiseRow(
-                        sunrise = uiState.sunrise,
-                        sunset = uiState.sunset
-                    )
                 }
 
                 Column(
