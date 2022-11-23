@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.util.Calendar
+import java.util.TimeZone
 
 class WeatherRepositoryImpl(
     private val apiService: ApiService,
@@ -134,7 +135,8 @@ class WeatherRepositoryImpl(
     private fun takeNext24Hours(stampDto: WeatherStampDto): List<HourWeatherDto> {
         val twoDaysHours = mutableListOf<HourWeatherDto>()
         stampDto.days.take(2).forEach { twoDaysHours.addAll(it.hours) }
-        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val currentHour = Calendar.getInstance(TimeZone.getTimeZone("GMT"))
+            .get(Calendar.HOUR_OF_DAY) + stampDto.tzOffset!!.toInt()
         return twoDaysHours.drop(currentHour + 1).take(24)
     }
 
