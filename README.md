@@ -1,7 +1,7 @@
 # <img src="https://user-images.githubusercontent.com/43218153/203524881-c80f8c7b-9188-4435-a1b4-ef6bcb16067a.png" alt="drawing" width="36" height="36"/> Weather
 
 ## _Tech stack_
-Kotlin, MVVM, Jetpack compose, Koin, Room, Retrofit
+Kotlin, MVVM, Jetpack compose, Koin, Room, Retrofit, API: visualcrossing.com
 
 ## _Features_ 
   - current weather
