@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,13 +28,14 @@ fun ImagedBlock(
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
-            .height(350.dp)
+            .height(400.dp)
             .clip(RoundedCornerShape(0.dp, 0.dp, 32.dp, 32.dp))
             .paint(
                 painter = painterResource(image.getBackgroundRes()),
                 contentScale = ContentScale.FillWidth
             )
             .background(TintFilter)
+            .padding(top = 56.dp)
     ) {
         content()
     }

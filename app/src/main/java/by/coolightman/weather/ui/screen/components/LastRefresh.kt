@@ -26,12 +26,12 @@ fun LastRefresh(lastRefresh: Long) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 4.dp)
+            .padding(end = 32.dp)
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_round_cached_24),
             contentDescription = "reload",
-            tint = MaterialTheme.colors.onSurface.copy(0.5f),
+            tint = MaterialTheme.colors.onSurface.copy(0.3f),
             modifier = Modifier.size(14.dp).mirror()
         )
 
@@ -39,8 +39,8 @@ fun LastRefresh(lastRefresh: Long) {
 
         Text(
             text = lastRefresh.toFormattedTime(),
-            fontSize = 12.sp,
-            color = MaterialTheme.colors.onSurface.copy(0.5f),
+            fontSize = 10.sp,
+            color = MaterialTheme.colors.onSurface.copy(0.3f),
             fontWeight = FontWeight.Light,
         )
     }

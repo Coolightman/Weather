@@ -1,6 +1,7 @@
 package by.coolightman.weather.ui.screen.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -27,10 +28,11 @@ fun NowWeatherBlock(
     feelTemp: Int
 ) {
     Column(
+        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.height(170.dp)
+        modifier = Modifier.height(140.dp)
     ) {
-        SpacerHorizon(height = 24.dp)
+        SpacerHorizon(height = 8.dp)
 
         Row(
             verticalAlignment = Alignment.CenterVertically,

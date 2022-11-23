@@ -1,5 +1,6 @@
 package by.coolightman.weather.ui.screen.components
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -24,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -36,9 +36,10 @@ import by.coolightman.weather.util.mirror
 
 @Composable
 fun WeatherTopBar(
+    modifier: Modifier = Modifier,
     resolvedAddress: String,
     apiState: ApiState,
-    background: Color = MaterialTheme.colors.background,
+    alpha: Float,
     onClickMenu: () -> Unit,
     onClickRefresh: () -> Unit
 ) {
@@ -59,11 +60,17 @@ fun WeatherTopBar(
         )
     )
 
+    val iconColor by animateColorAsState(
+        targetValue = if (alpha > 0.5) MaterialTheme.colors.primary
+        else MaterialTheme.colors.onSurface,
+        animationSpec = tween()
+    )
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .background(background)
+            .background(MaterialTheme.colors.background.copy(alpha))
             .height(56.dp)
     ) {
         IconButton(
@@ -72,7 +79,7 @@ fun WeatherTopBar(
             Icon(
                 painter = painterResource(id = R.drawable.ic_round_menu_24),
                 contentDescription = "menu",
-                tint = MaterialTheme.colors.primary
+                tint = iconColor
             )
         }
 
@@ -108,7 +115,7 @@ fun WeatherTopBar(
             Icon(
                 painter = painterResource(id = R.drawable.ic_round_cached_24),
                 contentDescription = "reload",
-                tint = MaterialTheme.colors.primary,
+                tint = iconColor,
                 modifier = if (apiState is ApiState.Loading) {
                     Modifier
                         .mirror()
