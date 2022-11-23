@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import by.coolightman.weather.R
 import by.coolightman.weather.domain.model.ApiState
-import by.coolightman.weather.ui.theme.ColorAccent
 import by.coolightman.weather.util.mirror
 
 @Composable
@@ -53,12 +52,9 @@ fun WeatherTopBar(
 
     val infiniteTransition = rememberInfiniteTransition()
     val angle by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
+        initialValue = 0f, targetValue = 360f, animationSpec = infiniteRepeatable(
             animation = tween(
-                durationMillis = 1200,
-                easing = LinearEasing
+                durationMillis = 1200, easing = LinearEasing
             )
         )
     )
@@ -71,13 +67,12 @@ fun WeatherTopBar(
             .height(56.dp)
     ) {
         IconButton(
-            onClick = { onClickMenu() },
-            modifier = Modifier.padding(start = 4.dp)
+            onClick = { onClickMenu() }, modifier = Modifier.padding(start = 4.dp)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_round_menu_24),
                 contentDescription = "menu",
-                tint = ColorAccent
+                tint = MaterialTheme.colors.primary
             )
         }
 
@@ -113,7 +108,7 @@ fun WeatherTopBar(
             Icon(
                 painter = painterResource(id = R.drawable.ic_round_cached_24),
                 contentDescription = "reload",
-                tint = ColorAccent,
+                tint = MaterialTheme.colors.primary,
                 modifier = if (apiState is ApiState.Loading) {
                     Modifier
                         .mirror()
